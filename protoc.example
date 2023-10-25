@@ -1,0 +1,12 @@
+docker build -t github.com/someuser/service/protoc:latest -f protoc.dockerfile .
+
+# bash script
+rootPath=$(pwd)
+docker run --rm -v $rootPath:$rootPath -w $rootPath github.com/someuser/service/protoc:latest \
+ --proto_path=.                                                                               \
+ --go_out=./gen --go_opt=paths=source_relative                                                \
+ --go-grpc_out=./gen --go-grpc_opt=paths=source_relative                                      \
+  proto/service/v1/types.proto                                                                \
+  proto/service/v1/one_service.proto                                                          \
+  proto/service/v1/two_service.proto                                                          \
+  proto/service/v1/events.proto

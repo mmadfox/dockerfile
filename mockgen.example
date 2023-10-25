@@ -1,0 +1,13 @@
+docker build -t github.com/someuser/service/mockgen:latest -f mockgen.dockerfile .
+
+# bash script 
+declare -a files=(
+    # golang interfaces
+    "internal/service/storage.go"
+)
+path="$(pwd)"
+for file in "${files[@]}"
+do
+   filepath="${file/internal/}"
+   docker run --rm -v $path:$path github.com/someuser/service/mockgen -destination="$path/tests/mocks$filepath" -source="$path/$file"
+done;
